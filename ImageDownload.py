@@ -23,10 +23,10 @@ from google.cloud.vision import types
 
 
     # Twitter API credentials
-consumer_key = "228XlU7E4gtzvw1zPI7YfcFoc"
-consumer_secret = "gHPTudu33d7CCwPlbWFE9EbpJDyuTkVkzJUC4BBruZkRa3vuE0"
-access_key = "1039252875698995200-2nOJAGrOPkmFgEfiNzLrPwGVlCDszD"
-access_secret = "z9fjJ7Ll17F71dcXrhjWd414szehGQ9NK30oX4DYpCg0s"
+consumer_key = "Enter your consumer key here"
+consumer_secret = "Enter your consumer secret here"
+access_key = "Enter your access key here"
+access_secret = "Enter your access secret here"
 
     # Tweepy config
 @classmethod
@@ -45,7 +45,7 @@ auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
     # get tweets from a user
 
-tweets = api.user_timeline(screen_name='itsbeautynature',
+tweets = api.user_timeline(screen_name='Enter the twitter username',
                            count=60, include_rts=False,
                            exclude_replies=True)
     # obtain the urls of images
