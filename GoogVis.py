@@ -36,16 +36,16 @@ while n < len(list)-1:
 
     font = ImageFont.truetype('HelveticaNeue.ttc', 30)
 
-    # 打开图片
+    # open the downloaded image
     imageFile = "/Users/leon/PycharmProjects/untitled/images/image" + str(n)+".jpg"
     im1 = Image.open(imageFile)
 
     draw = ImageDraw.Draw(im1)
-    # (0,0):坐标, 添加的字体, (255,0,0):字体颜色 font:字体大小
+    # (0,0):coordinates, (255,0,0):font color, font size
     draw.text((0, 0), str(Des), (255, 0, 0), font=font)
     draw = ImageDraw.Draw(im1)
 
-    # 保存
+    # save the labeled image
     if not os.path.exists('finalimages'):
         os.mkdir('finalimages')
     im1.save("/Users/leon/PycharmProjects/untitled/finalimages/image"+str(n)+".png")
