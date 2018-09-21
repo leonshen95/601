@@ -10,36 +10,47 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 client = vision.ImageAnnotatorClient()
 
 # The name of the image file to annotate
-file_name = os.path.join(
-    os.path.dirname(__file__),
-    '/Users/leon/PycharmProjects/untitled/images/image2.jpg')
+list = os.listdir('/Users/leon/PycharmProjects/untitled/images')
 
-# Loads the image into memory
-with io.open(file_name, 'rb') as image_file:
-    content = image_file.read()
+n = 0
 
-image = types.Image(content=content)
+while n < len(list)-1:
+    file_name = os.path.join(
+        os.path.dirname(__file__),
+        '/Users/leon/PycharmProjects/untitled/images/image' + str(n) + '.jpg')
 
-# Performs label detection on the image file
-response = client.label_detection(image=image)
-labels = response.label_annotations
-Des=[]
-print('Labels:')
-for label in labels:
-    print(label.description)
-    Des.append(label.description)
+    # Loads the image into memory
+    with io.open(file_name, 'rb') as image_file:
+        content = image_file.read()
 
+    image = types.Image(content=content)
 
-font = ImageFont.truetype('HelveticaNeue.ttc', 60)
+    # Performs label detection on the image file
+    response = client.label_detection(image=image)
+    labels = response.label_annotations
+    Des = []
+    # print('Labels:')
+    for label in labels:
+        # print(label.description)
+        Des.append(label.description)
 
-#打开图片
-imageFile = "/Users/leon/PycharmProjects/untitled/images/image2.jpg"
-im1=Image.open(imageFile)
+    font = ImageFont.truetype('HelveticaNeue.ttc', 30)
 
-draw = ImageDraw.Draw(im1)
-# (0,0):坐标 "XUNALOVE"：添加的字体 (0,0,255):字体颜色 font:字体大小
-draw.text((0, 0), str(Des), (255, 0, 0), font=font)
-draw = ImageDraw.Draw(im1)
+    # 打开图片
+    imageFile = "/Users/leon/PycharmProjects/untitled/images/image" + str(n)+".jpg"
+    im1 = Image.open(imageFile)
 
-# 保存
-im1.save("/Users/leon/PycharmProjects/untitled/images/image2.png")
+    draw = ImageDraw.Draw(im1)
+    # (0,0):坐标, 添加的字体, (255,0,0):字体颜色 font:字体大小
+    draw.text((0, 0), str(Des), (255, 0, 0), font=font)
+    draw = ImageDraw.Draw(im1)
+
+    # 保存
+    if not os.path.exists('finalimages'):
+        os.mkdir('finalimages')
+    im1.save("/Users/leon/PycharmProjects/untitled/finalimages/image"+str(n)+".png")
+
+    n = n + 1
+
+# os.system("ffmpeg -framerate 1/5 -i /Users/leon/PycharmProjects/untitled/finalimages/image%d.png -c:v libx264 -r 30 -pix_fmt yuv420p out.mp4")
+os.system("ffmpeg -framerate 24 -r 1 -i /Users/leon/PycharmProjects/untitled/finalimages/image%d.png -s 1080*1080 -pix_fmt yuv420p out.mp4")
