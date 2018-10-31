@@ -1,4 +1,4 @@
-# 601
+# TwitterHandle
 
 EC601
 Class Repository for Product Design in ECE
