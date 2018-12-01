@@ -44,9 +44,10 @@ auth.set_access_token(access_key, access_secret)
 
 api = tweepy.API(auth)
     # get tweets from a user
-
-tweets = api.user_timeline(screen_name='Enter the twitter username',
-                           count=60, include_rts=False,
+name = input("Please Enter a Twitter username(eg: @AvrilLavigne. Enter the characters after @: ")
+num = input("Please Enter how many images you would like to download: ")
+tweets = api.user_timeline(screen_name=name,
+                           count=num, include_rts=False,
                            exclude_replies=True)
     # obtain the urls of images
 media_files = set()
@@ -67,7 +68,20 @@ for media_file in media_files:
     imagepaths.append(imagepath)
     wget.download(media_file, imagepath)
     n = n + 1
+cnx = mysql.connector.connect(user='root', password='leon950417', database='twitter')
+cursor = cnx.cursor()
 
+add_transaction = ("INSERT INTO transactions "
+                       "(usrid, num, image_name, description) "
+                       "VALUES (%s, %s, %s, %s)")
+data_transaction = (name, num, '', '')
+cursor.execute(add_transaction,data_transaction)
+emp_no = cursor.lastrowid
+
+cnx.commit()
+
+cursor.close()
+cnx.close()
 
 # os.system("ffmpeg -framerate 1/5 -i /Users/leon/PycharmProjects/untitled/images/image%d.png -c:v libx264 -r 30 -pix_fmt yuv420p out.mp4")
 
