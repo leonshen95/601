@@ -1,14 +1,4 @@
-# import random
-# import urllib.request
-# import tweepy
-#
-#
-# def download_web_image(url):
-#     name = random.randrange(1,1000)
-#     full_name = str(name) + ".jpg"
-#     urllib.request.urlretrieve(url,full_name)
-#
-#     download_web_image("")
+# author: Leyang Shen
 import tweepy  # https://github.com/tweepy/tweepy
 import json
 from tweepy import OAuthHandler
@@ -19,7 +9,10 @@ import os
 # Imports the Google Cloud client library
 from google.cloud import vision
 from google.cloud.vision import types
-
+from mysql.connector import Error
+from mysql.connector import errorcode
+from datetime import date, datetime, timedelta
+import mysql.connector
 
 
     # Twitter API credentials
@@ -83,29 +76,7 @@ cnx.commit()
 cursor.close()
 cnx.close()
 
-# os.system("ffmpeg -framerate 1/5 -i /Users/leon/PycharmProjects/untitled/images/image%d.png -c:v libx264 -r 30 -pix_fmt yuv420p out.mp4")
 
 
 
-# Instantiates a client
-# client = vision.ImageAnnotatorClient()
 
-# for newpath in imagepath:
-#     # The name of the image file to annotate
-#     file_name = os.path.join(
-#         os.path.dirname(__file__),
-#         newpath)
-#
-#     # Loads the image into memory
-#     with io.open(file_name, 'rb') as image_file:
-#         content = image_file.read()
-#
-#     image = types.Image(content=content)
-#
-#     # Performs label detection on the image file
-#     response = client.label_detection(image=image)
-#     labels = response.label_annotations
-#
-#     print('Labels:')
-#     for label in labels:
-#         print(label.description)
