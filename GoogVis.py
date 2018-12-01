@@ -1,19 +1,25 @@
+#Leyang Shen
 import io
 import os
 # Imports the Google Cloud client library
 from google.cloud import vision
 from google.cloud.vision import types
-
+import mysql.connector
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-# Instantiates a client
-client = vision.ImageAnnotatorClient()
-
+credential_file = "/Users/leon/Downloads/PicDesc-87a0e7d15396.json"
+def get_image_client(credential_file):
+    return vision.ImageAnnotatorClient.from_service_account_file(credential_file)
+client = get_image_client(credential_file)
 # The name of the image file to annotate
 list = os.listdir('/Users/leon/PycharmProjects/untitled/images')
 
 n = 0
-
+cnx = mysql.connector.connect(user='root', password='leon950417', database='twitter')
+cursor = cnx.cursor()
+add_transaction = ("INSERT INTO transactions "
+                   "(usrid, num, image_name, description) "
+                   "VALUES (%s, %s, %s, %s)")
 while n < len(list)-1:
     file_name = os.path.join(
         os.path.dirname(__file__),
@@ -35,8 +41,8 @@ while n < len(list)-1:
         Des.append(label.description)
 
     font = ImageFont.truetype('HelveticaNeue.ttc', 30)
-
-    # open the downloaded image
+    cursor.execute("INSERT INTO transactions(image_name, description) VALUES('%s', '%s')"% ('image' + str(n) + '.jpg', Des))
+    # open the image
     imageFile = "/Users/leon/PycharmProjects/untitled/images/image" + str(n)+".jpg"
     im1 = Image.open(imageFile)
 
@@ -51,6 +57,10 @@ while n < len(list)-1:
     im1.save("/Users/leon/PycharmProjects/untitled/finalimages/image"+str(n)+".png")
 
     n = n + 1
+emp_no = cursor.lastrowid
 
-# os.system("ffmpeg -framerate 1/5 -i /Users/leon/PycharmProjects/untitled/finalimages/image%d.png -c:v libx264 -r 30 -pix_fmt yuv420p out.mp4")
+cnx.commit()
+cursor.close()
+cnx.close()
+
 os.system("ffmpeg -framerate 24 -r 1 -i /Users/leon/PycharmProjects/untitled/finalimages/image%d.png -s 1080*1080 -pix_fmt yuv420p out.mp4")
