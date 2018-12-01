@@ -6,7 +6,7 @@ Class Repository for Product Design in ECE
 
 ### Description:
 
-- This project is for downloading images from a twitter feed, labeling the description by image detection, and then convert them to a video.
+- This project is for downloading images from a twitter feed, labeling the description by image detection, and then convert them to a video. Detail information of every transaction will be saved in database (MySQL and MongoDB).
 
 -----------------------------------------------------------
 
