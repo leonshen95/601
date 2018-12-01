@@ -13,7 +13,7 @@ from mysql.connector import Error
 from mysql.connector import errorcode
 from datetime import date, datetime, timedelta
 import mysql.connector
-
+from pymongo import MongoClient
 
     # Twitter API credentials
 consumer_key = "Enter your consumer key here"
