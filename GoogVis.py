@@ -1,4 +1,4 @@
-#Leyang Shen
+#author: Leyang Shen
 import io
 import os
 # Imports the Google Cloud client library
@@ -6,6 +6,7 @@ from google.cloud import vision
 from google.cloud.vision import types
 import mysql.connector
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from pymongo import MongoClient
 
 credential_file = "/Users/leon/Downloads/PicDesc-87a0e7d15396.json"
 def get_image_client(credential_file):
