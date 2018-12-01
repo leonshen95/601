@@ -19,8 +19,8 @@ credentials for applications.
 
 - Run the ImageDownload.py, you will need to enter twitter username and your preferred image counts. Then the twitter images from a specific user will be downloaded automatically and stored to a folder named "images".  
      
-- The username and image count will be saved in database.
+- The username and image count will be saved in MySQL and MongoDB.
 
 - Then run the GoogVis.py, the google vision api will auto detect the description of the images and label the tags on each of images. The processed images will be stored in a new folder named "finalimages". Meanwhile, the labelled images will be converted into a video. 
 
-- The image names and its label(description) will be saved in database.
+- The image names and its label(description) will be saved in MySQL and MongoDB.
