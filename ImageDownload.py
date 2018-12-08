@@ -14,7 +14,11 @@ from mysql.connector import errorcode
 from datetime import date, datetime, timedelta
 import mysql.connector
 from pymongo import MongoClient
-
+import pymongo
+    # login mongodb server.
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = myclient["twitter"]
+mycol = mydb["transaction"]
     # Twitter API credentials
 consumer_key = "Enter your consumer key here"
 consumer_secret = "Enter your consumer secret here"
@@ -61,6 +65,8 @@ for media_file in media_files:
     imagepaths.append(imagepath)
     wget.download(media_file, imagepath)
     n = n + 1
+    
+    # Use MySQL to insert data
 cnx = mysql.connector.connect(user='root', password='leon950417', database='twitter')
 cursor = cnx.cursor()
 
@@ -76,7 +82,15 @@ cnx.commit()
 cursor.close()
 cnx.close()
 
+    # Use Mongodb to insert data
+mylist = [
+    {"usrid": name, "num": num, "image_name": "", "description": ""}
+]
 
+x = mycol.insert_many(mylist)
+
+
+print(x.inserted_ids)
 
 
 
