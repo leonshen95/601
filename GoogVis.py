@@ -7,15 +7,20 @@ from google.cloud.vision import types
 import mysql.connector
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from pymongo import MongoClient
+import pymongo
 
 credential_file = "/Users/leon/Downloads/PicDesc-87a0e7d15396.json"
 def get_image_client(credential_file):
     return vision.ImageAnnotatorClient.from_service_account_file(credential_file)
 client = get_image_client(credential_file)
-# The name of the image file to annotate
+    # The name of the image file to annotate
 list = os.listdir('/Users/leon/PycharmProjects/untitled/images')
-
+    # login the mongodb sever
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = myclient["twitter"]
+mycol = mydb["transaction"]
 n = 0
+    # sign in the MySQL server
 cnx = mysql.connector.connect(user='root', password='leon950417', database='twitter')
 cursor = cnx.cursor()
 add_transaction = ("INSERT INTO transactions "
@@ -42,6 +47,11 @@ while n < len(list)-1:
         Des.append(label.description)
 
     font = ImageFont.truetype('HelveticaNeue.ttc', 30)
+    # Store image name and its description in mongodb
+    mylist = [
+        {"image_name": "image"+str(n)+".jpg", "description": Des}
+    ]
+    # Store image name and its description in mysql
     cursor.execute("INSERT INTO transactions(image_name, description) VALUES('%s', '%s')"% ('image' + str(n) + '.jpg', Des))
     # open the image
     imageFile = "/Users/leon/PycharmProjects/untitled/images/image" + str(n)+".jpg"
@@ -58,10 +68,12 @@ while n < len(list)-1:
     im1.save("/Users/leon/PycharmProjects/untitled/finalimages/image"+str(n)+".png")
 
     n = n + 1
+    # commit changes in MySQL
 emp_no = cursor.lastrowid
 
 cnx.commit()
 cursor.close()
 cnx.close()
-
+    # commit changes in mongodb
+x = mycol.insert_many(mylist)
 os.system("ffmpeg -framerate 24 -r 1 -i /Users/leon/PycharmProjects/untitled/finalimages/image%d.png -s 1080*1080 -pix_fmt yuv420p out.mp4")
